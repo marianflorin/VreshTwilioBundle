@@ -8,9 +8,9 @@ class SmsMessages extends ListResource
     public function getSchema()
     {
         return array(
-            'class' => 'Vresh\TwilioBundle\Twilio\Lib\SmsMessages',
+            'class' => 'Vresh\TwilioBundle\Twilio\Lib\Rest\SmsMessages',
             'basename' => 'SMS/Messages',
-            'instance' => 'Vresh\TwilioBundle\Twilio\Lib\SmsMessage',
+            'instance' => 'Vresh\TwilioBundle\Twilio\Lib\Rest\SmsMessage',
             'list' => 'sms_messages',
         );
     }
