@@ -18,6 +18,7 @@ Add this to your debs file
 		target=/bundles/Vresh/TwilioBundle
 		version=origin/master
 
+
 Register the namespace in your *app/autoload.php*
 
 	$loader->registerNamespaces(array(
@@ -47,22 +48,46 @@ Place the following values in the *app/config/config.yml*
 Usage
 -----
 
-To send SMS messages:
+To send SMS:
 
 	$twilio = $this->get('twilio.api');
     $twilio->account->sms_messages->create(
     	'+123456789', // from
     	'+987654321', // to
-    	'Hello Mr. Bond' // message
+    	'Hello Mr. Bond.' // message
     );
 
-Generating TwiML:
+
+To make a call:
+
+	$twilio = $this->get('twilio.api');
+	$twilio->account->calls->create(
+		'+123456789', // from
+		'+987654321', // to
+  		'http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient' // TwiML on connect
+  	);
+
+
+Generating TwiML for SMS:
 
 	use Vresh\TwilioBundle\Twilio\Lib\Twiml;
     ...
     // within controller method
     $twiml = new Twiml();
     $twiml->sms('Welcome to the outer limits!'); // send SMS
+    $response = new Response($twiml);
+    $response->headers->set('Content-Type', 'application/xml');
+	return $response;
+
+
+Generating TwiML for call:
+
+	use Vresh\TwilioBundle\Twilio\Lib\Twiml;
+    ...
+    // within controller method
+    $twiml = new Twiml();
+    $twiml->say('E.T. phone home.'); // say message
+    $twiml->play('https://api.twilio.com/cowbell.mp3', array("loop" => 5));
     $response = new Response($twiml);
     $response->headers->set('Content-Type', 'application/xml');
 	return $response;
