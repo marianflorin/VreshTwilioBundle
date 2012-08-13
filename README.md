@@ -5,7 +5,8 @@ Symfony2 Twilio Bundle - by Vresh.net
 About
 -----
 
-TBD
+A Symfony2 bundle for interacting with Twilio.
+
 
 Installation
 ------------
@@ -14,7 +15,7 @@ Add this to your debs file
 
 	[VreshTwilioBundle]
 		git=http://github.com/Vreshware/VreshTwilioBundle.git
-		target=/bundles/Vresh/VreshTwilioBundle
+		target=/bundles/Vresh/TwilioBundle
 		version=origin/master
 
 Register the namespace in your *app/autoload.php*
@@ -36,12 +37,35 @@ Add the bundle to *app/AppKernel.php*
 Configuration
 -------------
 
-TBD
+Place the following values in the *app/config/config.yml*
+
+	vresh_twilio:
+    	sid: replace-with-sid-from-twilio-cp
+    	authToken: replace-with-auth-token-from-twilio-cp
+
 
 Usage
 -----
 
-TBD
+To send SMS messages:
+
+	$twilio = $this->get('twilio.api');
+    $twilio->account->sms_messages->create(
+    	'+123456789', // from
+    	'+987654321', // to
+    	'Hello Mr. Bond' // message
+    );
+
+Generating TwiML:
+
+	use Vresh\TwilioBundle\Twilio\Lib\Twiml;
+    ...
+    // within controller method
+    $twiml = new Twiml();
+    $twiml->sms('Welcome to the outer limits!'); // send SMS
+    $response = new Response($twiml);
+    $response->headers->set('Content-Type', 'application/xml');
+	return $response;
 
 
 Copyright
