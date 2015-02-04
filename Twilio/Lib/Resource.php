@@ -69,16 +69,22 @@ abstract class Resource implements DataProxy
 
     public static function decamelize($word)
     {
-        return preg_replace(
-            '/(^|[a-z])([A-Z])/e',
-            'strtolower(strlen("\\1") ? "\\1_\\2" : "\\2")',
+        return preg_replace_callback('/(^|[a-z])([A-Z])/',
+            function ($matches) {
+                return strtolower(strlen($matches[1]) ? $matches[1] . '_' . $matches[2] : $matches[2]);
+            },
             $word
         );
     }
 
     public static function camelize($word)
     {
-        return preg_replace('/(^|_)([a-z])/e', 'strtoupper("\\2")', $word);
+        return preg_replace_callback('/(^|_)([a-z])/',
+            function ($matches) {
+                return strtoupper($matches[2]);
+            },
+            $word
+        );
     }
 }
 
